@@ -1,9 +1,10 @@
 <?php
 echo header('Access-Control-Allow-Origin: http://localhost:3000');
 echo header('Access-Control-Allow-Credentials: true');
-echo header('Access-Control-Allow-Methods: POST, OPTIONS')
+echo header('Access-Control-Allow-Methods: POST, OPTIONS');
 echo header('Access-Control-Allow-Headers: Accept, Content-Type, Access-Control-Allow-Header');
 echo header('Content-type: application/json');
+echo header('Access-Control-Max-Age: 3600');
 
 $input = json_encode(file_get_contents('php://input'));
 $description = filter_var($input->desc,FILTER_SANITIZE_STRING);
@@ -21,7 +22,7 @@ try {
   $query->execute();
 
   echo header('HTTP/1.1 200 OK');
-  $data = array('id' => $db->lastInsertId(), 'description' => $description, 'amount' => $amount);
+  $data = array('id' => $db->lastInsertId(), 'desc' => $description, 'amount' => $amount);
   echo json_encode($data);
 } catch(PDOException $pdoex) {
   echo header('HTTP/1.1 500 Internal Server Error');
